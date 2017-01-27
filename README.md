@@ -31,9 +31,11 @@ There are number of tools to monitor jvm memory usage: jstat, jconsole, jmc, Vis
 
 ### Our goal is to support the files with up to 100M reviews on multiple machines with 500MB of RAM and 4 core CPUs. How are you going to make it happen?
 
-There are number of ways:
+I see a few ways at first sight:
 
 * Hadoop Map Reduce 
 * Spark
 * Akka, Akka Streaming
+
+Of course this is not complete list, I beleive there are many other ways to think about.
 
