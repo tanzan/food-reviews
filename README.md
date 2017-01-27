@@ -1,6 +1,6 @@
 # Build Prerequisites
 
-* SBT 0.13
+* SBT 0.13.13
 * Scala 2.11.8
 
 # Building and Running
