@@ -5,7 +5,7 @@
 
 # Building and Running
 
-We assuming that current working directory is the project dir.
+We assume that current working directory is the project dir.
 
 To  build jar file submit : 
 ```
