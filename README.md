@@ -14,7 +14,7 @@ sbt assembly
 
 Run the calculation by command:
 ```
-java -Xmx500m -jar target/scala-2.11/reviews.ja <path to Reviews.csv>
+java -Xmx500m -jar target/scala-2.11/reviews.jar <path to Reviews.csv>
 ```
 
 # Responses to Questions
