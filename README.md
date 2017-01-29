@@ -1,11 +1,11 @@
 # Build Prerequisites
 
-* SBT 0.13
+* SBT 0.13.13
 * Scala 2.11.8
 
 # Building and Running
 
-We assuming that current working directory is the project dir.
+We assume that current working directory is the project dir.
 
 To  build jar file submit : 
 ```
@@ -14,7 +14,7 @@ sbt assembly
 
 Run the calculation by command:
 ```
-java -Xmx500m -jar target/scala-2.11/reviews.ja <path to Reviews.csv>
+java -Xmx500m -jar target/scala-2.11/reviews.jar <path to Reviews.csv>
 ```
 
 # Responses to Questions
@@ -31,9 +31,11 @@ There are number of tools to monitor jvm memory usage: jstat, jconsole, jmc, Vis
 
 ### Our goal is to support the files with up to 100M reviews on multiple machines with 500MB of RAM and 4 core CPUs. How are you going to make it happen?
 
-There are number of ways:
+I see a few ways at first sight:
 
 * Hadoop Map Reduce 
 * Spark
 * Akka, Akka Streaming
+
+Of course this is not complete list, I beleive there are many other ways to think about.
 
