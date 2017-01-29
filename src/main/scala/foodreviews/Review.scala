@@ -2,6 +2,8 @@ package foodreviews
 
 import java.util.regex.Pattern
 
+import scala.concurrent.Future
+
 /**
   * Created by serg on 1/27/17.
   */
@@ -11,7 +13,9 @@ case class Review(id:Int, productId:String, userId:String, profileName:String,
 
 object Review {
 
-  final val EntryPattern = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)")
+  import scala.concurrent.ExecutionContext.Implicits.global
+
+  private final val EntryPattern = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)")
 
   def parseEntry(entry:String):Review = {
 
@@ -33,8 +37,28 @@ object Review {
 
   }
 
-  def splitWords(s:String):Stream[String] = s.split("\\W+").map(_.toLowerCase).toStream
+  def mostActiveUsers(reviewStream:() => Stream[Review]):Future[Seq[(String, Int)]] = Future {
+    reviewStream().map(_.profileName)
+      .groupBy(user => user).mapValues(_.size)
+      .toSeq.sortWith(_._2 > _._2).take(1000)
+  }
 
-  def countWords(words:Map[String, Int], word:(String, Int)):Map[String, Int] =
-    words + (word._1 ->  (words.getOrElse(word._1, 0) + word._2))
+  def mostCommentedItems(reviewStream:() => Stream[Review]):Future[Seq[(String, Int)]] = Future {
+    reviewStream().map(_.productId)
+      .groupBy(id => id).mapValues(_.size)
+      .toSeq.sortWith(_._2 > _._2).take(1000)
+  }
+
+  def mostUsedWords(reviewStream:() => Stream[Review]):Future[Seq[(String, Int)]] = {
+
+    def splitWords(s: String): Stream[String] = s.split("\\W+").map(_.toLowerCase).toStream
+
+    def countWords(words: Map[String, Int], word: (String, Int)): Map[String, Int] =
+      words + (word._1 -> (words.getOrElse(word._1, 0) + word._2))
+
+    Future {
+      reviewStream().flatMap(r => splitWords(r.text).map(w => (w, 1)))
+        .foldLeft(Map[String, Int]())((words, w) => countWords(words, w)).toSeq.sortWith(_._2 > _._2).take(1000)
+    }
+  }
 }
